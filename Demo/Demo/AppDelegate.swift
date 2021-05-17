@@ -140,8 +140,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         // Determine next theme
         var nextIndex = AppDelegate.slideshowThemeIndices[0]
-        if let currentThemeIndex = themes.index(where: { $0 === ThemeManager.shared.theme }),
-            let currentSlideshowIndex = AppDelegate.slideshowThemeIndices.index(of: currentThemeIndex),
+        if let currentThemeIndex = themes.firstIndex(where: { $0 === ThemeManager.shared.theme }),
+            let currentSlideshowIndex = AppDelegate.slideshowThemeIndices.firstIndex(of: currentThemeIndex),
             currentSlideshowIndex + 1 < AppDelegate.slideshowThemeIndices.count {
             nextIndex = AppDelegate.slideshowThemeIndices[currentSlideshowIndex + 1]
         }

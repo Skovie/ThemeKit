@@ -419,35 +419,33 @@ open class ThemeColor: NSColor {
         return ThemeColor.color(with: themeColorSelector, colorSpace: space)
     }
 
-//    override open func usingColorSpaceName(_ colorSpace: NSColorSpaceName?, device deviceDescription: [NSDeviceDescriptionKey: Any]?) -> NSColor? {
-//        if colorSpace == self.type {
-//            return self
-//        }
-//
-//        let newColorSpace: NSColorSpace
-//        if colorSpace == NSColorSpaceName.calibratedWhite {
-//            newColorSpace = .genericGray
-//        } else if colorSpace == NSColorSpaceName.calibratedRGB {
-//            newColorSpace = .genericRGB
-//        } else if colorSpace == NSColorSpaceName.deviceWhite {
-//            newColorSpace = .deviceGray
-//        } else if colorSpace == NSColorSpaceName.deviceRGB {
-//            newColorSpace = .deviceRGB
-//        } else if colorSpace == NSColorSpaceName.deviceCMYK {
-//            newColorSpace = .deviceCMYK
-//        } else if colorSpace == NSColorSpaceName.custom {
-//            newColorSpace = .genericRGB
-//        } else {
-//            /* unsupported colorspace conversion */
-//            return nil
-//        }
-//
-//        return ThemeColor.color(with: themeColorSelector, colorSpace: newColorSpace)
-//    }
-//
-//    @objc override open var colorSpaceName: NSColor.ColorType {
-//        return resolvedThemeColor.type
-//    }
+     open func usingColorSpace(_ colorSpace: NSColorSpace?, device deviceDescription: [NSDeviceDescriptionKey: Any]?) -> NSColor? {
+        if colorSpace == self.colorSpace {
+            return self
+        }
+
+        let newColorSpace: NSColorSpace
+        if colorSpace == NSColorSpace.genericRGB {
+            newColorSpace = .genericRGB
+        } else if colorSpace == NSColorSpace.deviceGray {
+            newColorSpace = .deviceGray
+        } else if colorSpace == NSColorSpace.deviceRGB {
+            newColorSpace = .deviceRGB
+        } else if colorSpace == NSColorSpace.deviceCMYK {
+            newColorSpace = .deviceCMYK
+        } else if colorSpace == NSColorSpace.sRGB {
+            newColorSpace = .genericRGB
+        } else {
+            /* unsupported colorspace conversion */
+            return nil
+        }
+
+        return ThemeColor.color(with: themeColorSelector, colorSpace: newColorSpace)
+    }
+
+    @objc override open var type: NSColor.ColorType {
+        return resolvedThemeColor.type
+    }
 
     override open var colorSpace: NSColorSpace {
         return resolvedThemeColor.colorSpace

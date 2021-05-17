@@ -58,8 +58,13 @@ class SidebarViewController: NSViewController, NSOutlineViewDataSource, NSOutlin
 
         if !reset, let pastNotes = userDefaultsNotes as? Data {
             // Load past notes
-            let unarchivedObject = NSKeyedUnarchiver.unarchiveObject(with: pastNotes)
-            newNotes = unarchivedObject is [Note] ? unarchivedObject as? [Note] : nil
+            do {
+                let unarchivedObject = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(pastNotes)
+                newNotes = unarchivedObject is [Note] ? unarchivedObject as? [Note] : nil
+            } catch {
+                print("Couldn't Load past notes")
+            }
+                
         }
 
         if newNotes == nil {
@@ -86,9 +91,13 @@ class SidebarViewController: NSViewController, NSOutlineViewDataSource, NSOutlin
 
     /// Save notes
     @objc private func saveNotes() {
-        let archivedData = NSKeyedArchiver.archivedData(withRootObject: notes)
-        UserDefaults.standard.set(archivedData, forKey: userDefaultsKey)
-        UserDefaults.standard.synchronize()
+        do {
+            let archivedData = try NSKeyedArchiver.archivedData(withRootObject: notes, requiringSecureCoding: false)
+            UserDefaults.standard.set(archivedData, forKey: userDefaultsKey)
+            UserDefaults.standard.synchronize()
+        } catch {
+            print("Couldn't Load past notes")
+        }
     }
 
     /// Add a new note
